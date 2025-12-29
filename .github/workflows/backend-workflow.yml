@@ -1,38 +1,30 @@
-name: myworkflow
+name: backend
 
 on:
 
   push:
-    branches: main
-
-  pull_request:
-    branches: main
+    branches: [ main ]
 
 jobs:
   docker-run:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: checkout
+      - name: Checkout front-end repo
         uses: actions/checkout@v4
-
-      - name: setup docker
-        uses: docker/setup-buildx-action@v3
-
-      - name: build services
-        run: docker compose build
-
-      - name: run services
-        run: docker compose up -d
-
-      - name: show containers
-        run: docker compose ps
-
-      - name: stop services
-        run: docker compose down
-
-
+        with:
+          path: frontend
         
+      - name: Checkout back-end repo
+        uses: actions/checkout@v4
+        with:
+          repository: Bashar-OP/CI_CD_Back
+          path: backend
+          
+      - name: Run runner docker compose
+        run: |
+          docker-compose up -d
+          docker-compose down
 
 
 
