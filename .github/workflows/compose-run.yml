@@ -64,8 +64,6 @@ jobs:
       packages: read
 
     steps:
-      - run: cd ~
-      - run: pwd
       - name: Run docker compose
         run: |
           docker-compose up -d
