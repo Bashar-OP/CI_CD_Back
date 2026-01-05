@@ -64,7 +64,7 @@ jobs:
       packages: read
 
     steps:
-      - run: cd ~/Desktop/Training/DevOps/3.CI_CD/apptraining
+      - run: cd ~
       - run: pwd
       - name: Run docker compose
         run: |
