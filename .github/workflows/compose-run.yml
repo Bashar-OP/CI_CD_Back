@@ -5,7 +5,7 @@ on:
     branches: [ main ] 
 
 jobs:
-  docker-run:
+  images-push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -56,6 +56,19 @@ jobs:
 
       
 
+  docker-compose-execute:
+    needs: images-push
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - run: cd ~/Desktop/Training/DevOps/3.CI_CD/apptraining
+      - name: Run docker compose
+        run: |
+          docker-compose up -d
+          docker-compose down
 
 
 
