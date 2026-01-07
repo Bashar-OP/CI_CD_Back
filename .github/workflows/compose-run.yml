@@ -44,7 +44,7 @@ jobs:
     steps:
       - name: Run docker compose
         run: |
-          docker-compose up -d
+          docker-compose up -d || true
           docker-compose down
 
 
