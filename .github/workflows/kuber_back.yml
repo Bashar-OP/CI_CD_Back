@@ -34,7 +34,7 @@ jobs:
         run: docker push ghcr.io/bashar-op/backend:latest
       
 
-  docker-compose-execute:
+  kubernetes-runner:
     needs: images-push
     runs-on: self-hosted
     permissions:
@@ -42,12 +42,8 @@ jobs:
       packages: read
 
     steps:
-      - name: Run docker compose
+      - name: Apply yaml files
         run: |
-          docker-compose up -d || true
-          docker-compose down
+          ./run_resources.sh || true
+          ./delete_resources.sh
 
-
-
-      
-  
