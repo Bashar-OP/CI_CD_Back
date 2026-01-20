@@ -1,0 +1,53 @@
+name: backend
+   
+on:
+  push:
+    branches: [ main ] 
+
+jobs:
+  images-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout back-end repo
+        uses: actions/checkout@v4
+        with:
+          path: backend
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Backend image
+        run: |
+           cd backend
+           docker build -t ghcr.io/bashar-op/backend:latest .
+           cd ..
+
+      - name: Push Backend image
+        run: docker push ghcr.io/bashar-op/backend:latest
+      
+
+  docker-compose-execute:
+    needs: images-push
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Run docker compose
+        run: |
+          docker-compose up -d || true
+          docker-compose down
+
+
+
+      
+  
